@@ -27,7 +27,7 @@ import { DEFAULT_DATETIME_FORMAT } from "src/utils/datetimeUtils";
 
 dayjs.extend(tz);
 
-const debounceDelay = 500;
+const debounceDelay = 1000;
 
 type Props = {
   readonly value: string;
@@ -41,8 +41,7 @@ export const DateTimeInput = forwardRef<HTMLInputElement, Props>(({ onChange, va
     const valid = dayjs(event.target.value).isValid();
     // UI Timezone -> Utc -> yyyy-mm-ddThh:mmZ
     const utc = valid ? dayjs.tz(event.target.value, selectedTimezone).toISOString() : "";
-    const local =
-      Boolean(utc) && valid ? dayjs(utc).tz(selectedTimezone).format(DEFAULT_DATETIME_FORMAT) : "";
+    const local = Boolean(utc) ? dayjs(utc).tz(selectedTimezone).format(DEFAULT_DATETIME_FORMAT) : "";
 
     // Set display value to be from utc to local to avoid year mismatch
     // As dayjs() parses years before 1000 incorrectly, see dayjs/issues/1237
